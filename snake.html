@@ -88,7 +88,63 @@
   </div>
 
   <script>
-    // 游戏代码将在此处逐步添加
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreSpan = document.getElementById('scoreValue');
+    const btnStart = document.getElementById('btnStart');
+    const btnRestart = document.getElementById('btnRestart');
+
+    const GRID_SIZE = 20;
+    const CELL_SIZE = 25;
+    const SPEED = 150;
+
+    let snake, food, direction, nextDirection, gameState, score, gameLoopId;
+
+    function initGame() {
+      snake = [
+        { x: 10, y: 10 },
+        { x: 9, y: 10 },
+        { x: 8, y: 10 }
+      ];
+      direction = { x: 1, y: 0 };
+      nextDirection = { x: 1, y: 0 };
+      food = { x: 15, y: 10 };
+      score = 0;
+      gameState = 'idle';
+      scoreSpan.textContent = '0';
+      btnRestart.style.display = 'none';
+      draw();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 绘制网格线
+      ctx.strokeStyle = 'rgba(74, 222, 128, 0.06)';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i <= GRID_SIZE; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * CELL_SIZE, 0);
+        ctx.lineTo(i * CELL_SIZE, canvas.height);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i * CELL_SIZE);
+        ctx.lineTo(canvas.width, i * CELL_SIZE);
+        ctx.stroke();
+      }
+
+      // 绘制蛇身
+      snake.forEach((seg, i) => {
+        ctx.fillStyle = i === 0 ? '#6ee7a0' : '#4ade80';
+        ctx.fillRect(seg.x * CELL_SIZE + 1, seg.y * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2);
+      });
+
+      // 绘制食物
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(food.x * CELL_SIZE + 1, food.y * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2);
+    }
+
+    initGame();
   </script>
 
 </body>
