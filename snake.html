@@ -144,6 +144,52 @@
       ctx.fillRect(food.x * CELL_SIZE + 1, food.y * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2);
     }
 
+    function move() {
+      direction = { ...nextDirection };
+
+      const head = snake[0];
+      const newHead = { x: head.x + direction.x, y: head.y + direction.y };
+
+      // 碰撞检测
+      if (newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE) {
+        return gameOver();
+      }
+      if (snake.some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
+        return gameOver();
+      }
+
+      snake.unshift(newHead);
+
+      // 吃食物判断
+      if (newHead.x === food.x && newHead.y === food.y) {
+        score++;
+        scoreSpan.textContent = score;
+        spawnFood();
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+
+    function spawnFood() {
+      // Will be implemented in Task 5
+    }
+
+    function gameOver() {
+      // Will be implemented in Task 5
+    }
+
+    function gameLoop() {
+      if (gameState === 'playing') {
+        move();
+      }
+    }
+
+    function startGameLoop() {
+      gameLoopId = setInterval(gameLoop, SPEED);
+    }
+
     initGame();
   </script>
 
