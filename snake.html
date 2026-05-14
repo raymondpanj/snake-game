@@ -150,18 +150,19 @@
       const head = snake[0];
       const newHead = { x: head.x + direction.x, y: head.y + direction.y };
 
-      // 碰撞检测
       if (newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE) {
         return gameOver();
       }
-      if (snake.some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
+
+      const willEat = newHead.x === food.x && newHead.y === food.y;
+      const checkSegments = willEat ? snake : snake.slice(0, -1);
+      if (checkSegments.some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
         return gameOver();
       }
 
       snake.unshift(newHead);
 
-      // 吃食物判断
-      if (newHead.x === food.x && newHead.y === food.y) {
+      if (willEat) {
         score++;
         scoreSpan.textContent = score;
         spawnFood();
@@ -187,6 +188,7 @@
     }
 
     function startGameLoop() {
+      if (gameLoopId) clearInterval(gameLoopId);
       gameLoopId = setInterval(gameLoop, SPEED);
     }
 
