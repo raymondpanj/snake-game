@@ -112,6 +112,7 @@
       score = 0;
       gameState = 'idle';
       scoreSpan.textContent = '0';
+      btnStart.style.display = 'inline-block';
       btnRestart.style.display = 'none';
       draw();
     }
@@ -240,6 +241,24 @@
           break;
       }
     });
+
+    function startGame() {
+      gameState = 'playing';
+      btnStart.style.display = 'none';
+      btnRestart.style.display = 'inline-block';
+      draw();
+      startGameLoop();
+    }
+
+    function restartGame() {
+      clearInterval(gameLoopId);
+      initGame();
+      startGame();
+    }
+
+    btnStart.addEventListener('click', startGame);
+
+    btnRestart.addEventListener('click', restartGame);
 
     initGame();
   </script>
