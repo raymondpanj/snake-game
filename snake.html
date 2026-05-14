@@ -192,6 +192,29 @@
       gameLoopId = setInterval(gameLoop, SPEED);
     }
 
+    document.addEventListener('keydown', (e) => {
+      if (gameState !== 'playing') return;
+
+      switch (e.key) {
+        case 'ArrowUp':
+          if (direction.y !== 1) nextDirection = { x: 0, y: -1 };
+          e.preventDefault();
+          break;
+        case 'ArrowDown':
+          if (direction.y !== -1) nextDirection = { x: 0, y: 1 };
+          e.preventDefault();
+          break;
+        case 'ArrowLeft':
+          if (direction.x !== 1) nextDirection = { x: -1, y: 0 };
+          e.preventDefault();
+          break;
+        case 'ArrowRight':
+          if (direction.x !== -1) nextDirection = { x: 1, y: 0 };
+          e.preventDefault();
+          break;
+      }
+    });
+
     initGame();
   </script>
 
