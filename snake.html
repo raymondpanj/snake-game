@@ -98,7 +98,7 @@
     const CELL_SIZE = 25;
     const SPEED = 150;
 
-    let snake, food, direction, nextDirection, gameState, score, gameLoopId;
+    let snake, food, direction, nextDirection, gameState, score, gameLoopId, directionChanged;
 
     function initGame() {
       snake = [
@@ -108,12 +108,12 @@
       ];
       direction = { x: 1, y: 0 };
       nextDirection = { x: 1, y: 0 };
-      food = { x: 15, y: 10 };
       score = 0;
       gameState = 'idle';
       scoreSpan.textContent = '0';
       btnStart.style.display = 'inline-block';
       btnRestart.style.display = 'none';
+      spawnFood();
       draw();
     }
 
@@ -209,6 +209,7 @@
     }
 
     function gameLoop() {
+      directionChanged = false;
       if (gameState === 'playing') {
         move();
       }
@@ -224,19 +225,19 @@
 
       switch (e.key) {
         case 'ArrowUp':
-          if (direction.y !== 1) nextDirection = { x: 0, y: -1 };
+          if (direction.y !== 1 && !directionChanged) { nextDirection = { x: 0, y: -1 }; directionChanged = true; }
           e.preventDefault();
           break;
         case 'ArrowDown':
-          if (direction.y !== -1) nextDirection = { x: 0, y: 1 };
+          if (direction.y !== -1 && !directionChanged) { nextDirection = { x: 0, y: 1 }; directionChanged = true; }
           e.preventDefault();
           break;
         case 'ArrowLeft':
-          if (direction.x !== 1) nextDirection = { x: -1, y: 0 };
+          if (direction.x !== 1 && !directionChanged) { nextDirection = { x: -1, y: 0 }; directionChanged = true; }
           e.preventDefault();
           break;
         case 'ArrowRight':
-          if (direction.x !== -1) nextDirection = { x: 1, y: 0 };
+          if (direction.x !== -1 && !directionChanged) { nextDirection = { x: 1, y: 0 }; directionChanged = true; }
           e.preventDefault();
           break;
       }
